@@ -1,0 +1,84 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Static files (CSS, JavaScript, Images)
+/static/
+
+# Media files (Uploads)
+/media/
+
+# Virtual environment
+venv/
+ENV/
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Database files
+*.db
+
+# Ignore pipenv virtual environment
+/.venv/
+
+# Ignore poetry virtual environment
+/.venv/
+
+# Ignore pipenv lock file
+Pipfile.lock
+
+# Ignore poetry lock file
+poetry.lock
+
+# Ignore coverage reports
+.coverage
+htmlcov/
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore mypy cache
+.mypy_cache/
+
+# Ignore pycache
+__pycache__/
+
+# Ignore local development settings
+.env
+
+# Ignore local development database
+db.sqlite3
+
+# Ignore local development media
+media/
