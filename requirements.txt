@@ -7,7 +7,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==42.0.0; python_version >= '3.7'
 defusedxml==0.8.0rc2; python_version >= '3.6'
-django==3.2.23; python_version >= '3.6'
+django==3.2.24; python_version >= '3.6'
 django-templated-mail==1.1.1
 djangorestframework==3.14.0; python_version >= '3.6'
 djangorestframework-simplejwt==4.8.0; python_version >= '3.7'
