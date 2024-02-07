@@ -81,6 +81,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    "mysql": {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'backend',
+        'USER': 'bistroadmin',
+        'PASSWORD': 'Acc3ss87!',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -129,7 +137,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DJOSER = {
-    'USER_ID_FIELD': 'name',
+    'USER_ID_FIELD': 'username',
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
@@ -141,12 +149,33 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+        'user_create': 'djoser.serializers.UserCreateSerializer',
+        'user': 'djoser.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+        'user_update': 'djoser.serializers.UserUpdateSerializer',
+        'user_list': 'djoser.serializers.UserListSerializer',
+        'set_password': 'djoser.serializers.SetPasswordSerializer',
+        'password_reset': 'djoser.serializers.PasswordResetSerializer',
+        'password_reset_confirm': 'djoser.serializers.PasswordResetConfirmSerializer',
+        'username_reset': 'djoser.serializers.UsernameResetSerializer',
+        'username_reset_confirm': 'djoser.serializers.UsernameResetConfirmSerializer',
+        'activation': 'djoser.serializers.ActivationSerializer',
+        'resend_activation': 'djoser.serializers.ResendActivationSerializer',
+        'password_reset': 'djoser.serializers.PasswordResetSerializer',
+        'password_reset_confirm': 'djoser.serializers.PasswordResetConfirmSerializer',
+        'set_username': 'djoser.serializers.SetUsernameSerializer',
+        'login': 'djoser.serializers.LoginSerializer',
+        'token': 'djoser.serializers.TokenSerializer',
+        'logout': 'djoser.serializers.LogoutSerializer',
+
+    },
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -156,8 +185,16 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10, # Number of items per page
+
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/min',
+        'user': '20/min',
+    },
 }
-
-
 

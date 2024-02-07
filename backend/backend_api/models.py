@@ -1,13 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.utils import timezone
 from django.db import models
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
-class User(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    class Meta:
-        verbose_name_plural = 'User'
 
 class Category(models.Model):
     """
