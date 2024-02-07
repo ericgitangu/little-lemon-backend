@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'backend_api',  # Add 'backend_api' to the INSTALLED_APPS list
+    'backend_api', # Add 'backend_api' to the INSTALLED_APPS list
+    'rest_framework_simplejwt', # Add 'rest_framework_simplejwt' to the INSTALLED_APPS list 
 ]
 
 MIDDLEWARE = [
@@ -176,6 +177,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -183,6 +186,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FITLER_BACKENDS': [
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.DjangoFilterBackend',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10, # Number of items per page

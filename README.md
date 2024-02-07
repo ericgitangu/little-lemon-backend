@@ -291,6 +291,8 @@
 2. api
 3. api-auth - (rest_framework endpoints)
 4. auth - (djoser - urls, authtokens)
+5. api/token - (JWT, obtain an access & refresh token)
+6. api/token/refresh - (Renew an access token using a refresh token)
 
 ## Project
 
