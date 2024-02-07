@@ -1,4 +1,4 @@
-# Django API Endpoints - Using Djoser and DRF for Authentication on the project level
+# Django API Endpoints - Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
 
 ## User Endpoints note only admins can change users (IsAdmin)
 
@@ -260,3 +260,44 @@
 - Method: DELETE
 - View: `CategoryDeleteView`
 - Name: `category-delete
+
+## Models
+
+1. Category - verbose_name_plural 'Category'
+2. MenuItem - verbose_name_plural 'Menu Item'
+3. Cart - verbose_name_plural 'Cart'
+4. CartItem - verbose_name_plural 'Cart Item'
+5. Order - verbose_name_plural 'Order'
+6. OrderItem - - verbose_name_plural 'Order Item'
+
+## Databases
+
+1. sqlite
+2. MySQL (use --database mysql to migrate to your mysql instance)
+
+## Project URLs
+
+1. admin
+2. api
+3. api-auth - (rest_framework endpoints)
+4. auth - (djoser - urls, authtokens)
+
+## Project
+
+- backend
+
+## App
+
+- backend_api
+
+## Set up
+
+1. cd backend
+2. pipenv shell
+3. pipenv install
+4. make migrations
+5. migrate (you can use the sqlite DB or change the credential settings to use your mysql instance)
+6. create a super user 'createsuper'
+7. run server
+8. Test the endpoints as documented above, note the super user has priviledges to make changes to models as you 
+   would in the admin panel.
