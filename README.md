@@ -6,7 +6,7 @@
 
 ## Users can only update their own info when authenticated (IsAuthenticated)
 
-## API throttling implemented for unauthenticated users to 10 call/min and 20 calls/mins for authenticated uses.
+## API throttling implemented for unauthenticated users to 10 calls/min and 20 calls/mins for authenticated uses.
 
 ### List all users
 
