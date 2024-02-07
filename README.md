@@ -1,4 +1,6 @@
-# Django API Endpoints - Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
+# Django API Endpoints 
+
+## Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
 
 ## User Endpoints note only admins can change users (IsAdmin)
 
