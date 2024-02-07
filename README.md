@@ -4,7 +4,7 @@
 
 1. Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
 
-2. User Endpoints note only admins can change users (IsAdmin)
+2. User Endpoints note only admins can change users, my menu items, and assign users to specific groups, managers, delivers etc (IsAdmin)
 
 3. Users can only update their own info when authenticated (IsAuthenticated)
 
