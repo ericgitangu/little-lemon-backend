@@ -78,10 +78,8 @@ class UserCreateView(generics.CreateAPIView):
     The user will be created using the UserSerializer and the current authenticated user will be set as the creator.
     """
 
-    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
-    http_method_names = ['post']
 
     def get_queryset(self):
         return super().get_queryset()
