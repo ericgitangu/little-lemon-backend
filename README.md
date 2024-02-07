@@ -1,14 +1,16 @@
 # Django API Endpoints 
 
-## Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
+## Project objectives:
 
-## User Endpoints note only admins can change users (IsAdmin)
+1. Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
 
-## Users can only update their own info when authenticated (IsAuthenticated)
+2. User Endpoints note only admins can change users (IsAdmin)
 
-## API throttling implemented for unauthenticated users to 10 calls/min and 20 calls/mins for authenticated uses.
+3. Users can only update their own info when authenticated (IsAuthenticated)
 
-##
+4. API throttling implemented for unauthenticated users to 10 calls/min and 20 calls/mins for authenticated uses.
+
+5. Endpoints - Users, Menu-items, Cart, Categories, Orders, Delivery Crews, Managers with granular access, users, managers and admins
 
 ## User Endpoints
 
