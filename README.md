@@ -2,7 +2,9 @@
 
 ## User Endpoints note only admins can change users (IsAdmin)
 
-### Users can only update their own info when authenticated (IsAuthenticated)
+## Users can only update their own info when authenticated (IsAuthenticated)
+
+## API throttling implemented for unauthenticated users to 10 call/min and 20 calls/mins for authenticated uses.
 
 ### List all users
 
