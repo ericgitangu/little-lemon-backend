@@ -1,6 +1,6 @@
-# Django API Endpoints 
+# Django API Endpoints
 
-## Project objectives:
+## Project objectives
 
 1. Using Djoser and DRF for Authentication on the project level - Coursera META specialization certification for the API final project
 
@@ -309,5 +309,5 @@
 5. migrate (you can use the sqlite DB or change the credential settings to use your mysql instance)
 6. create a super user 'createsuper'
 7. run server
-8. Test the endpoints as documented above, note the super user has priviledges to make changes to models as you 
+8. Test the endpoints as documented above, note the super user has priviledges to make changes to models as you
    would in the admin panel.
