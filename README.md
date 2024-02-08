@@ -292,6 +292,267 @@
 - View: `CategoryDeleteView`
 - Name: `category-delete
 
+## Groups endpoints
+
+### List all manager users from the groups
+
+- Endpoint: `api/groups/manager/users/`
+- Method: GET
+- View: `ManagerUserListView`
+- Name: `manager-user-list`
+
+### Create a manager user in a group
+
+- Endpoint: `api/groups/manager/users/create/`
+- Method: POST
+- View: `ManagerUserCreateView`
+- Name: `manager-user-create`
+
+### Manager User Delete
+
+- Endpoint: `api/groups/manager/users/delete/<int:pk>/`
+- Method: DELETE
+- View: `ManagerUserDeleteView`
+- Name: `manager-user-delete`
+
+### Delivery Crew User List
+
+- Endpoint: `api/groups/delivery-crew/users/`
+- Method: GET
+- View: `DeliveryCrewUserListView`
+- Name: `delivery-crew-user-list`
+
+### Delivery Crew User Create
+
+- Endpoint: `api/groups/delivery-crew/users/create/`
+- Method: POST
+- View: `DeliveryCrewUserCreateView`
+- Name: `delivery-crew-user-create`
+
+### Delivery Crew User Delete
+
+- Endpoint: `api/groups/delivery-crew/users/delete/<int:pk>/`
+- Method: DELETE
+- View: `DeliveryCrewUserDeleteView`
+- Name: `delivery-crew-user-delete`
+
+### Assign Order
+
+- Endpoint: `api/groups/manager/assign-order/<int:pk>/`
+- Method: GET
+- View: `AssignOrderView`
+- Name: `assign-order`
+
+### Change Featured Item
+
+- Endpoint: `api/groups/manager/featured-item/<int:pk>/`
+- Method: GET
+- View: `ChangeFeaturedItemView`
+- Name: `change-featured-item`
+
+### Change Order Status
+
+- Endpoint: `api/groups/delivery-crew/change-status/<int:pk>/`
+- Method: GET
+- View: `ChangeOrderStatusView`
+- Name: `change-order-status`
+
+### Cart List
+
+- Endpoint: `api/groups/cart/`
+- Method: GET
+- View: `CartItemListView`
+- Name: `cart-list`
+
+### Cart Detail
+
+- Endpoint: `api/groups/cart/<int:pk>/`
+- Method: GET
+- View: `CartItemListView`
+- Name: `cart-detail`
+
+### Cart Create
+
+- Endpoint: `api/groups/cart/create/`
+- Method: POST
+- View: `CartItemCreateView`
+- Name: `cart-create`
+
+### Cart Update
+
+- Endpoint: `api/groups/cart/update/<int:pk>/`
+- Method: PUT/PATCH
+- View: `CartItemUpdateView`
+- Name: `cart-update`
+
+### Cart Delete
+
+- Endpoint: `api/groups/cart/delete/<int:pk>/`
+- Method: DELETE
+- View: `CartItemDeleteView`
+- Name: `cart-delete`
+
+### Order List
+
+- Endpoint: `api/groups/orders/`
+- Method: GET
+- View: `OrderListView`
+- Name: `order-list`
+
+### Order Detail
+
+- Endpoint: `api/groups/orders/<int:pk>/`
+- Method: GET
+- View: `OrderDetailView`
+- Name: `order-detail`
+
+### Order Create
+
+- Endpoint: `api/groups/orders/create/`
+- Method: POST
+- View: `OrderCreateView`
+- Name: `order-create`
+
+### Order Update
+
+- Endpoint: `api/groups/orders/update/<int:pk>/`
+- Method: PUT/PATCH
+- View: `OrderUpdateView`
+- Name: `order-update`
+
+### Order Delete
+
+- Endpoint: `api/groups/orders/delete/<int:pk>/`
+- Method: DELETE
+- View: `OrderDeleteView`
+- Name: `order-delete`
+
+### Category List
+
+- Endpoint: `api/groups/categories/`
+- Method: GET
+- View: `CategoryListView`
+- Name: `category-list`
+
+### Category Detail
+
+- Endpoint: `api/groups/categories/<int:pk>/`
+- Method: GET
+- View: `CategoryDetailView`
+- Name: `category-detail`
+
+### Category Create
+
+- Endpoint: `api/groups/categories/create/`
+- Method: POST
+- View: `CategoryCreateView`
+- Name: `category-create`
+
+### Category Update
+
+- Endpoint: `api/groups/categories/update/<int:pk>/`
+- Method: PUT/PATCH
+- View: `CategoryUpdateView`
+- Name: `category-update`
+
+### Category Delete
+
+- Endpoint: `api/groups/categories/delete/<int:pk>/`
+- Method: DELETE
+- View: `CategoryDeleteView`
+- Name: `category-delete`
+
+### User List
+
+- Endpoint: `api/groups/users/`
+- Method: GET
+- View: `UserListView`
+- Name: `user-list`
+
+### User Detail
+
+- Endpoint: `api/groups/users/<int:pk>/`
+- Method: GET
+- View: `UserDetailView`
+- Name: `user-detail`
+
+### User Create
+
+- Endpoint: `api/groups/users/create/`
+- Method: POST
+- View: `UserCreateView`
+- Name: `user-create`
+
+### User Update
+
+- Endpoint: `api/groups/users/update/<int:pk>/`
+- Method: PUT/PATCH
+- View: `UserUpdateView`
+- Name: `user-update`
+
+### User Delete
+
+- Endpoint: `api/groups/users/delete/<int:pk>/`
+- Method: DELETE
+- View: `UserDeleteView`
+- Name: `user-delete`
+
+### Current User
+
+- Endpoint: `api/groups/current-user/`
+- Method: GET
+- View: `CurrentUserView`
+- Name: `current-user`
+
+### User Login
+
+- Endpoint: `api/groups/token/login`
+- Method: GET
+- View: `UserTokenView`
+- Name: `user-login`
+
+### User Logout
+
+- Endpoint: `api/groups/token/logout`
+- Method: GET
+- View: `UserTokenView`
+- Name: `user-logout`
+
+### Menu Item List
+
+- Endpoint: `api/groups/menu-items/`
+- Method: GET
+- View: `MenuItemListView`
+- Name: `menu-item-list`
+
+### Menu Item Detail
+
+- Endpoint: `api/groups/menu-items/<int:pk>/`
+- Method: GET
+- View: `MenuItemDetailView`
+- Name: `menu-item-detail`
+
+### Menu Item Create
+
+- Endpoint: `api/groups/menu-items/create/`
+- Method: POST
+- View: `MenuItemCreateView`
+- Name: `menu-item-create`
+
+### Menu Item Update
+
+- Endpoint: `api/groups/menu-items/update/<int:pk>/`
+- Method: PUT/PATCH
+- View: `MenuItemUpdateView`
+- Name: `menu-item-update`
+
+### Menu Item Delete
+
+- Endpoint: `api/groups/menu-items/delete/<int:pk>/`
+- Method: DELETE
+- View: `MenuItemDeleteView`
+- Name: `menu-item-delete`
+
 ## Models
 
 1. Category - verbose_name_plural 'Category'

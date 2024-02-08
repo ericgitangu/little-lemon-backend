@@ -11,13 +11,13 @@ class Category(models.Model):
     """
 
     slug = models.SlugField()
-    title = models.CharField(max_length=255, db_index=True)
+    name = models.CharField(max_length=255, db_index=True)
 
     class Meta:
         verbose_name_plural = 'Category'
 
     def __str__(self):
-        return self.title
+        return self.name
     
 
 
@@ -26,12 +26,12 @@ class MenuItem(models.Model):
     Represents a menu item.
 
     Attributes:
-        title (str): The title of the menu item.
+        name (str): The name of the menu item.
         price (Decimal): The price of the menu item.
         featured (bool): Indicates if the menu item is featured.
         category (Category): The category to which the menu item belongs.
     """
-    title = models.CharField(max_length=255, db_index=True)
+    name = models.CharField(max_length=255, db_index=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, db_index=True)
     featured = models.BooleanField(db_index=True)
     category = models.ForeignKey(
@@ -43,7 +43,7 @@ class MenuItem(models.Model):
         verbose_name_plural = 'Menu Item'
 
     def __str__(self) -> str:
-        return self.title
+        return self.name
 
 
 class Cart(models.Model):
@@ -76,7 +76,7 @@ class Cart(models.Model):
         verbose_name_plural = 'Cart'
 
     def __str__(self) -> str:
-        return f'{self.user.username} - {self.menu_item.title}'
+        return f'{self.user.username} - {self.menu_item.name}'
 
 
 class Order(models.Model):
@@ -131,7 +131,7 @@ class OrderItem(models.Model):
         verbose_name_plural = 'Order Item'
 
     def __str__(self) -> str:
-        return f'{self.order.user.username} - {self.menu_item.title}'
+        return f'{self.order.user.username} - {self.menu_item.name}'
 
 class DeliveryCrewUser(models.Model):
     """
