@@ -1,4 +1,4 @@
-# Django API Endpoints
+# Django API Endpoints - META Backend Final Project for the Backend Specialization
 
 ## Project objectives
 
