@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 
 class CategorySerializer(serializers.ModelSerializer):
     """
@@ -59,23 +60,11 @@ class CartSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return super().create(validated_data)
     
-    def retrieve (self, validated_data):
-        return super().retrieve(validated_data)
-    
     def delete(self, validated_data):
         return super().delete(validated_data)
     
     def get_field_names(self, declared_fields, info):
         return super().get_field_names(declared_fields, info)
-    
-    def get_fields(self):
-        return super().get_fields()
-    
-    def get_default_field_names(self, declared_fields, model_info):
-        return super().get_default_field_names(declared_fields, model_info)
-    
-    def get_unique_together_constraints(self, model):
-        return super().get_unique_together_constraints(model)
 
 class OrderSerializer(serializers.ModelSerializer):
     """
@@ -112,39 +101,27 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     """
-    Serializer for creating an order item.
+    Serializer for creating an order.
     """
 
     class Meta:
-        model = OrderItem
+        model = Order
         fields = '__all__'
 
+    
     def create(self, validated_data):
+        """
+        Create a new order.
+
+        Args:
+            validated_data (dict): The validated data for creating the order.
+
+        Returns:
+            Order: The created order instance.
+        """
+        # Set the customer group for the order
+        validated_data['customer_group'] = 'customer'
         return super().create(validated_data)
-    
-    def retrieve (self, validated_data):
-        return super().retrieve(validated_data)
-    
-    def delete(self, validated_data):
-        return super().delete(validated_data)
-    
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
-    
-    def get_field_names(self, declared_fields, info):
-        return super().get_field_names(declared_fields, info)
-    
-    def get_fields(self):
-        return super().get_fields()
-    
-    def get_default_field_names(self, declared_fields, model_info):
-        return super().get_default_field_names(declared_fields, model_info)
-    
-    def get_unique_together_constraints(self, model):
-        return super().get_unique_together_constraints(model)
-    
-    def get_extra_kwargs(self):
-        return super().get_extra_kwargs()
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
@@ -227,69 +204,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
     def get_extra_kwargs(self):
         return super().get_extra_kwargs()
 
-class CartItemSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the CartItem model.
-    """
-    class Meta:
-        model = CartItem
-        fields = '__all__'
-
-    def create(self, validated_data):
-        """
-        Create a new CartItem instance.
-        """
-        return super().create(validated_data)
-    
-    def retrieve (self, validated_data):
-        """
-        Retrieve a CartItem instance.
-        """
-        return super().retrieve(validated_data)
-    
-    def delete(self, validated_data):
-        """
-        Delete a CartItem instance.
-        """
-        return super().delete(validated_data)
-    
-    def update(self, instance, validated_data):
-        """
-        Update a CartItem instance.
-        """
-        return super().update(instance, validated_data)
-    
-    def get_field_names(self, declared_fields, info):
-        """
-        Get the field names for the serializer.
-        """
-        return super().get_field_names(declared_fields, info)
-
-    def get_fields(self):
-        """
-        Get the fields for the serializer.
-        """
-        return super().get_fields()
-    
-    def get_default_field_names(self, declared_fields, model_info):
-        """
-        Get the default field names for the serializer.
-        """
-        return super().get_default_field_names(declared_fields, model_info)
-    
-    def get_unique_together_constraints(self, model):
-        """
-        Get the unique together constraints for the serializer.
-        """
-        return super().get_unique_together_constraints(model)
-    
-    def get_extra_kwargs(self):
-        """
-        Get the extra keyword arguments for the serializer.
-        """
-        return super().get_extra_kwargs()
-
-
 class UserSerializer(serializers.ModelSerializer):
     """
     Serializer for the User model.
@@ -309,41 +223,6 @@ class UserSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
-
-    def get_field_names(self, declared_fields, info):
-        return super().get_field_names(declared_fields, info)
-    
-    def get_fields(self):
-        return super().get_fields()
-    
-    def get_default_field_names(self, declared_fields, model_info):
-        return super().get_default_field_names(declared_fields, model_info)
-    
-    def get_unique_together_constraints(self, model):
-        return super().get_unique_together_constraints(model)
-    
-    def get_extra_kwargs(self):
-        return super().get_extra_kwargs()
-
-class UserTokenSerializer(serializers.ModelSerializer):
-    """
-    Serializer for UserToken model.
-    """
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def create(self, validated_data):
-        return super().create(validated_data)
-    
-    def retrieve (self, validated_data):
-        return super().retrieve(validated_data)
-    
-    def delete(self, validated_data):
-        return super().delete(validated_data)
-    
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
     
     def get_field_names(self, declared_fields, info):
         return super().get_field_names(declared_fields, info)
@@ -359,7 +238,6 @@ class UserTokenSerializer(serializers.ModelSerializer):
     
     def get_extra_kwargs(self):
         return super().get_extra_kwargs()
-
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """
     Serializer for user registration.
@@ -371,12 +249,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
-    
+        validated_data['password'] = make_password(validated_data['password'])
+
+        return super().create(validated_data)
+
     def retrieve (self, validated_data):
         return super().retrieve(validated_data)
-    
+
     def delete(self, validated_data):
         return super().delete(validated_data)
     
@@ -430,5 +309,137 @@ class UserLogoutSerializer(serializers.ModelSerializer):
     def get_unique_together_constraints(self, model):
         return super().get_unique_together_constraints(model)
     
+    def get_extra_kwargs(self):
+        return super().get_extra_kwargs()
+
+class AssignOrderSerializer(serializers.ModelSerializer):
+    """
+    Serializer for assigning an order to a delivery crew.
+    """
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+    
+    def retrieve (self, validated_data):
+        return super().retrieve(validated_data)
+    
+    def delete(self, validated_data):
+        return super().delete(validated_data)
+    
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+    
+    def get_field_names(self, declared_fields, info):
+        return super().get_field_names(declared_fields, info)
+    
+    def get_fields(self):
+        return super().get_fields()
+    
+    def get_default_field_names(self, declared_fields, model_info):
+        return super().get_default_field_names(declared_fields, model_info)
+    
+    def get_unique_together_constraints(self, model):
+        return super().get_unique_together_constraints(model)
+    
+    def get_extra_kwargs(self):
+        return super().get_extra_kwargs()
+    
+class OrderStatusSerializer(serializers.ModelSerializer):
+    """
+    Serializer for updating the status of an Order instance.
+    """
+    class Meta:
+        model = Order
+        fields = ['status']
+
+    def update(self, instance, validated_data):
+        instance.status = True
+        instance.save()
+        return instance
+    
+
+class ChangeFeaturedItemSerializer(serializers.ModelSerializer):
+    """
+    Serializer for changing the featured item.
+    """
+    class Meta:
+        model = MenuItem
+        fields = ['featured']
+
+    def update(self, instance, validated_data):
+        instance.featured = True
+        instance.save()
+        return instance
+
+class DeliveryCrewUserSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the DeliveryCrewUser model.
+    """
+    class Meta:
+        model = DeliveryCrewUser
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+    
+    def retrieve (self, validated_data):
+        return super().retrieve(validated_data)
+    
+    def delete(self, validated_data):
+        return super().delete(validated_data)
+    
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+    
+    def get_field_names(self, declared_fields, info):
+        return super().get_field_names(declared_fields, info)
+    
+    def get_fields(self):
+        return super().get_fields()
+    
+    def get_default_field_names(self, declared_fields, model_info):
+        return super().get_default_field_names(declared_fields, model_info)
+    
+    def get_unique_together_constraints(self, model):
+        return super().get_unique_together_constraints(model)
+    
+    def get_extra_kwargs(self):
+        return super().get_extra_kwargs()
+    
+class UserTokenSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the UserToken model.
+    """
+    class Meta:
+        model = UserToken
+        fields = '__all__'
+        
+    def create(self, validated_data):
+        return super().create(validated_data)
+        
+    def retrieve(self, validated_data):
+        return super().retrieve(validated_data)
+        
+    def delete(self, validated_data):
+        return super().delete(validated_data)
+        
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+        
+    def get_field_names(self, declared_fields, info):
+        return super().get_field_names(declared_fields, info)
+        
+    def get_fields(self):
+        return super().get_fields()
+        
+    def get_default_field_names(self, declared_fields, model_info):
+        return super().get_default_field_names(declared_fields, model_info)
+        
+    def get_unique_together_constraints(self, model):
+        return super().get_unique_together_constraints(model)
+        
     def get_extra_kwargs(self):
         return super().get_extra_kwargs()

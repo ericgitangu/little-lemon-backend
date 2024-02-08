@@ -137,6 +137,20 @@
 - View: `ManagerUserDeleteView`
 - Name: `manager-user-delete`
 
+### Change featured item
+
+- Endpoint: `api/manager-featured-item/<int:pk>/`
+- Method: GET
+- View: `ChangeFeaturedItemView`
+- Name: `change-featured-item`
+
+### Manager Assign Order
+
+- Endpoint: `api/manager-assign-order/<int:pk>/`
+- Method: GET
+- View: `AssignOrderView`
+- Name: `assign-order`
+
 ## Delivery Crew User Endpoints
 
 ### List all delivery crew users
@@ -159,6 +173,13 @@
 - Method: DELETE
 - View: `DeliveryCrewUserDeleteView`
 - Name: `delivery-crew-user-delete`
+
+### Change order status by the delivery crew user
+
+- Endpoint: `api/delivery-crew/change-status/<int:pk>/`
+- Method: GET
+- View: `ChangeOrderStatusView`
+- Name: `change-order-status`
 
 ## Cart Item Endpoints
 

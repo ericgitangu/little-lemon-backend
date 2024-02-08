@@ -1,18 +1,14 @@
 from django.shortcuts import render
 from requests import Response
-from rest_framework import generics, permissions,filters
+from rest_framework import generics, permissions,filters, status
 from rest_framework.exceptions import PermissionDenied
-from .serializers import *
 from django.shortcuts import get_object_or_404
 from .models import Category, MenuItem, Cart, Order, OrderItem
-from .serializers import *
 from django.contrib.auth.models import User
-from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
-from .permissions import IsOwnerOrReadOnly
-from rest_framework import status
-from rest_framework import generics, permissions
-from .serializers import CategorySerializer
-from .models import Category
+# from rest_framework.throttling import UserRateThrottle, AnonRateThrottle # implemented in the settings.py file
+from .permissions import IsManager, IsOwnerOrReadOnly, IsDeliveryCrew
+from .serializers import *
+from rest_framework.pagination import PageNumberPagination
 
 # User registration and token generation endpoints
 class UserRegistrationView(generics.CreateAPIView):
@@ -187,6 +183,12 @@ class MenuItemListView(generics.ListAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = PageNumberPagination
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ['price']
+    ordering = ['price']
+    search_fields = ['category__name']  # Add this line to search by category name
+    paginate_by = 5
 
 class MenuItemDetailView(generics.RetrieveAPIView):
     """
@@ -197,6 +199,13 @@ class MenuItemDetailView(generics.RetrieveAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = PageNumberPagination
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ['price']
+    ordering = ['price']
+    # Add this line to search by category name
+    search_fields = ['category__name']
+    paginate_by = 5
 
 class MenuItemCreateView(generics.CreateAPIView):
     """
@@ -270,7 +279,8 @@ class ManagerUserCreateView(generics.CreateAPIView):
     Permission Classes:
         IsAdminUser: Only admin users are allowed to access this view.
     """
-    serializer_class = UserSerializer
+    queryset = User.objects.filter(groups__name='Manager')
+    serializer_class = UserSerializer 
     permission_classes = [permissions.IsAdminUser]
 
 class ManagerUserDeleteView(generics.DestroyAPIView):
@@ -288,13 +298,13 @@ class ManagerUserDeleteView(generics.DestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
-# Delivery crew management endpoints
+# Delivery Crew management endpoints
 class DeliveryCrewUserListView(generics.ListAPIView):
     """
     API view for retrieving a list of delivery crew users.
     Only accessible to admin users.
     """
-    queryset = User.objects.filter(groups__name='Delivery crew')
+    queryset = User.objects.filter(groups__name='Delivery Crew')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
@@ -303,17 +313,17 @@ class DeliveryCrewUserCreateView(generics.CreateAPIView):
     View for creating a new delivery crew user.
     """
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, IsManager]
 
 class DeliveryCrewUserDeleteView(generics.DestroyAPIView):
     """
     A view for deleting a delivery crew user.
 
-    This view allows an admin user to delete a user who belongs to the 'Delivery crew' group.
+    This view allows an admin user to delete a user who belongs to the 'Delivery Crew' group.
     Only admin users have permission to access this view.
     """
 
-    queryset = User.objects.filter(groups__name='Delivery crew')
+    queryset = User.objects.filter(groups__name='Delivery Crew')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
@@ -329,8 +339,8 @@ class CartItemListView(generics.ListAPIView):
     API view for retrieving a list of cart items for the authenticated user.
     """
 
-    queryset = CartItem.objects.all()
-    serializer_class = CartItemSerializer
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -342,13 +352,14 @@ class CartItemCreateView(generics.CreateAPIView):
 
     This view allows authenticated users to create a new cart item.
     The user's cart is automatically associated with the created cart item.
+    By default, the price is set to the unit price of the menu item multiplied by the quantity.
 
     Attributes:
         serializer_class (Serializer): The serializer class used for validating and deserializing the request data.
         permission_classes (list): The list of permission classes that the user must satisfy to access this view.
     """
 
-    serializer_class = CartItemSerializer
+    serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -365,7 +376,7 @@ class CartItemDeleteView(generics.DestroyAPIView):
     This view allows authenticated users to delete a specific cart item from their cart.
     """
 
-    serializer_class = CartItemSerializer
+    serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -377,6 +388,31 @@ class CartItemDeleteView(generics.DestroyAPIView):
         cart_item = cart.cart_items.filter(menu_item=menu_item)
         cart_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def perform_destroy(self, instance):
+        instance.delete()
+
+class CartItemUpdateView(generics.UpdateAPIView):
+    """
+    A view for updating a cart item.
+
+    This view allows authenticated users to update the quantity of a specific cart item in their cart.
+    """
+
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+    
+    def put(self, request, *args, **kwargs):
+        cart = get_object_or_404(Cart, user=request.user)
+        menu_item = get_object_or_404(MenuItem, pk=kwargs['pk'])
+        cart_item = cart.cart_items.filter(menu_item=menu_item)
+        serializer = self.get_serializer(cart_item, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 # Order management endpoints
 class OrderCreateView(generics.CreateAPIView):
@@ -530,6 +566,58 @@ class OrderDeleteView(generics.DestroyAPIView):
     
     def perform_destroy(self, instance):
         instance.delete()
+
+class ChangeOrderStatusView(generics.UpdateAPIView):
+    """
+    A view for changing the status of an order by the Delivery Crew.
+
+    This view allows users in the 'Delivery Crew' group to change the status of an order.
+    The view expects the order ID and the new status as input.
+
+    Attributes:
+        queryset (QuerySet): The queryset used to retrieve the order.
+        serializer_class (Serializer): The serializer class used for validating and deserializing the request data.
+        permission_classes (list): The permission classes required to access the view.
+    """
+    queryset = Order.objects.all().filter(delivered=True)
+    serializer_class = OrderStatusSerializer
+    permission_classes = [IsDeliveryCrew]
+    def put(self, request, *args, **kwargs):
+        order = self.get_object()
+        serializer = self.get_serializer(order, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+class AssignOrderView(generics.UpdateAPIView):
+    """
+    A view for assigning orders to the delivery group.
+
+    This view allows users in the 'Manager' group to assign orders to the 'Delivery Crew' group.
+    The view expects the order ID and the user ID of the delivery crew member as input.
+
+        Attributes:
+            queryset (QuerySet): The queryset used to retrieve the order.
+                serializer_class (Serializer): The serializer class used for validating and deserializing the request data.
+                permission_classes (list): The permission classes required to access the view.
+    """
+    queryset = Order.objects.all()
+    serializer_class = AssignOrderSerializer
+    permission_classes = [permissions.IsAuthenticated, IsManager]
+
+    def put(self, request, *args, **kwargs):
+        order_id = kwargs.get('pk')
+        user_id = request.data.get('user_id')
+
+        order = self.get_object()
+        user = get_object_or_404(User, id=user_id)
+
+        if user.groups.filter(name='Delivery Crew').exists():
+            order.delivery_crew = user
+            order.save()
+            return Response({'message': 'Order assigned successfully.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Invalid user ID or user is not in the Delivery Crew group.'}, status=status.HTTP_400_BAD_REQUEST)
 
 class OrderItemListView(generics.ListAPIView):
     """
@@ -758,3 +846,28 @@ class CategoryDeleteView(generics.DestroyAPIView):
     
     def perform_destroy(self, instance):
         instance.delete()
+
+class ChangeFeaturedItemView(generics.UpdateAPIView):
+    """
+    A view for changing the featured item of the day.
+
+    This view allows the manager group to update the featured item of the day
+    by sending a PUT request to the specified endpoint. The updated featured item
+    should be provided in the request body in a format that can be deserialized by
+    the MenuItemSerializer.
+
+    Only users in the manager group are allowed to access this view.
+
+    Endpoint: /api/featured-item/update/
+    Method: PUT
+    """
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAuthenticated, IsManager]
+
+    def put(self, request, *args, **kwargs):
+        featured_item = get_object_or_404(MenuItem, featured=True)
+        serializer = self.get_serializer(featured_item, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)

@@ -10,3 +10,27 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.owner == request.user
+    
+class IsManager(permissions.BasePermission):
+    """
+    Custom permission class that allows only users in the Manager group to access the view.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.groups.filter(name='Manager').exists()
+    
+class IsDeliveryCrew(permissions.BasePermission):
+    """
+    Custom permission class that allows only users in the Delivery Crew group to access the view.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.groups.filter(name='Delivery Crew').exists()
+    
+class IsCustomer(permissions.BasePermission):
+    """
+    Custom permission class that allows only users in the Customer group to access the view.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.groups.filter(name='Customer').exists()

@@ -1,4 +1,4 @@
-from .views import UserRegistrationView, CurrentUserView, UserTokenView, MenuItemListView, MenuItemDetailView, MenuItemCreateView, MenuItemUpdateView, MenuItemDeleteView, ManagerUserListView, ManagerUserCreateView, ManagerUserDeleteView, DeliveryCrewUserListView, DeliveryCrewUserCreateView, DeliveryCrewUserDeleteView
+from .views import UserRegistrationView, CurrentUserView, UserTokenView, MenuItemListView, MenuItemDetailView, MenuItemCreateView, MenuItemUpdateView, MenuItemDeleteView, ManagerUserListView, ManagerUserCreateView, ManagerUserDeleteView, DeliveryCrewUserListView, DeliveryCrewUserCreateView, DeliveryCrewUserDeleteView, AssignOrderView, CartItemListView, OrderListView, OrderDetailView, OrderCreateView, OrderUpdateView, OrderDeleteView, CategoryListView, CategoryDetailView, CategoryCreateView, CategoryUpdateView, CategoryDeleteView, UserListView, UserDetailView, UserCreateView, UserUpdateView, UserDeleteView, ChangeOrderStatusView, ChangeFeaturedItemView
 from django.urls import path
 
 from .views import *
@@ -20,15 +20,19 @@ urlpatterns = [
     path('menu-items/delete/<int:pk>/', MenuItemDeleteView.as_view(), name='menu-item-delete'),
     path('manager-users/', ManagerUserListView.as_view(), name='manager-user-list'),
     path('manager-users/create/', ManagerUserCreateView.as_view(), name='manager-user-create'),
+    path('manager-assign-order/<int:pk>/', AssignOrderView.as_view(), name='assign-order'),
     path('manager-users/delete/<int:pk>/', ManagerUserDeleteView.as_view(), name='manager-user-delete'),
+    path('manager-featured-item/<int:pk>/', ChangeFeaturedItemView.as_view(), name='change-featured-item'),
     path('delivery-crew-users/', DeliveryCrewUserListView.as_view(), name='delivery-crew-user-list'),
     path('delivery-crew-users/create/', DeliveryCrewUserCreateView.as_view(), name='delivery-crew-user-create'),
     path('delivery-crew-users/delete/<int:pk>/', DeliveryCrewUserDeleteView.as_view(), name='delivery-crew-user-delete'),
+    path('delivery-crew/change-status/<int:pk>/',
+         ChangeOrderStatusView.as_view(), name='change-order-status'),
     path('cart/', CartItemListView.as_view(), name='cart-list'),
     path('cart/<int:pk>/', CartItemListView.as_view(), name='cart-detail'),
-    path('cart/create/', CartItemListView.as_view(), name='cart-create'),
-    path('cart/update/<int:pk>/', CartItemListView.as_view(), name='cart-update'),
-    path('cart/delete/<int:pk>/', CartItemListView.as_view(), name='cart-delete'),
+    path('cart/create/', CartItemCreateView.as_view(), name='cart-create'),
+    path('cart/update/<int:pk>/', CartItemUpdateView.as_view(), name='cart-update'),
+    path('cart/delete/<int:pk>/', CartItemDeleteView.as_view(), name='cart-delete'),
     path('orders/', OrderListView.as_view(), name='order-list'),
     path('orders/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
     path('orders/create/', OrderCreateView.as_view(), name='order-create'),
